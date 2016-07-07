@@ -19,6 +19,8 @@ from . import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'', include('select_appointment.urls')),
+    url(r'', include('registration.urls')),
     url(r'^$',views.index, name = 'index'),
     url(r'^api-access/$', views.api_access, name = 'api_access')
 ]

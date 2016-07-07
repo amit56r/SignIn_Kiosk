@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+
+
+
+{% block content %}
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" align="center">
+
+	<h1 class="page-header">Appointment Selection!</h1>
+
+	{%if a_list %}
+	<form action="">
+
+	<div class="btn-group-vertical" data-toggle="buttons">
+		{% for a in a_list %}
+
+		<label class="btn btn-default btn-lg">
+  			<input type="radio" name="selection" value="{{a.a_id}}">{{a.patient.first_name}} {{a.patient.last_name}} @ {{a.scheduled_time}}<br>
+  		</label>
+
+  		{% endfor %}
+	</div>
+
+
+ 	<p> </p>
+  	<div>
+	<button class="btn btn-primary" type="submit">Next</button>
+	</div>
+	</form>
+	{% else %}
+	<h3>No records found!</h3>
+	<a class="btn btn-danger" href="{% url 'index' %}">Restart?</a>
+	{% endif %}
+
+
+</div>
+<!-- /container -->
+{% endblock %}
+
+
+
+{% block sidebar %}
+{% endblock %}

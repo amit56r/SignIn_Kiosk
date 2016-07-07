@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'oauth2_provider',
     'SignIn_Kiosk',
+    'select_appointment',
+    'registration',
+    
 ]
 
 MIDDLEWARE_CLASSES = [

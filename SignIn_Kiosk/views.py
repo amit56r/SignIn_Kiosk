@@ -25,7 +25,7 @@ def index(request):
 		return api_access(request)
 
 
-	t = token_list[0]
+	t = token.objects.order_by('expire_timestamp')[0]
 	#testing apit comminucation
 	headers = {
 				'Authorization': '{} {}'.format(t.token_type,t.access_token),
@@ -36,13 +36,12 @@ def index(request):
 	patients_url = 'https://drchrono.com//api/appointments'
 	data = requests.get(patients_url, headers=headers, params=params).json()
 
-	for d in data['results']:
-		for key, value in d.iteritems():
-			print key, value
+	# for d in data['results']:
+	# 	for key, value in d.iteritems():
+	# 		print key, value
 
 
-
-	return render(request,'base.html',{})
+	return redirect('select_screen')
 
 
 
@@ -57,15 +56,17 @@ def get_token(code,token_list):
 
 	response = requests.post('https://drchrono.com/o/token/',data = data_dict)
 	data = response.json()
-	print data
+	#print data
 
-	if not token_list:
+
+	#not handling refresh token
+	if not  token_list:
 		#we need to create and store a token
 		new_token = token()
 		new_token.access_token = data['access_token']
 		new_token.refresh_token = data['refresh_token']
-		#add isoformat
-		new_token.expire_timestamp = str(timezone.now() + datetime.timedelta(seconds=data['expires_in']))
+		time_holder = timezone.now() + datetime.timedelta(seconds=data['expires_in'])
+		new_token.expire_timestamp = time_holder.isoformat()
 		new_token.token_type = data['token_type']
 		new_token.scope = data['scope']
 		new_token.save()
@@ -74,7 +75,8 @@ def get_token(code,token_list):
 		curr_token = token_list[0]
 		curr_token.access_token = data['access_token']
 		curr_token.refresh_token = data['refresh_token']
-		curr_token.expire_timestamp = str(timezone.now() + datetime.timedelta(seconds=data['expires_in']))
+		time_holder = timezone.now() + datetime.timedelta(seconds=data['expires_in'])
+		curr_token.expire_timestamp = time_holder.isoformat()
 		curr_token.token_type = data['token_type']
 		curr_token.scope = data['scope']
 		curr_token.save()
