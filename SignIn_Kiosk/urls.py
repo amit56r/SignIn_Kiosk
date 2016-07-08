@@ -21,6 +21,8 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'', include('select_appointment.urls')),
     url(r'', include('registration.urls')),
-    url(r'^$',views.index, name = 'index'),
-    url(r'^api-access/$', views.api_access, name = 'api_access')
+    url(r'^$',views.front_page, name = 'index'),
+    url(r'^sign_in$',views.sign_in, name = 'sign_in'),
+    url(r'^help$', views.help_page, name = 'help_page'),
+    url(r'^api-access/$', views.api_access, name = 'api_access'),
 ]

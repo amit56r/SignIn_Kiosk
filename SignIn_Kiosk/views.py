@@ -1,6 +1,7 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from django.utils import timezone
 from django.http import QueryDict
+from django.core.urlresolvers import reverse
 
 
 from django.contrib.auth.decorators import login_required
@@ -11,14 +12,32 @@ from .models import token
 
 
 
-def index(request):
+
+def front_page(request):
+
+	if request.method == "POST":
+		return redirect('sign_in')
+	elif 'code' in request.GET:
+		return sign_in(request)
+
+
+	return render(request,'frontpage.html',{})
+
+
+def help_page(request):
+	return render(request, 'help.html',{})
+
+
+
+
+def sign_in(request):
 	''' main front page for sign-in kiosk '''
 	#check if have alread gotten code
 	token_list  = token.objects.order_by('expire_timestamp') 
 	if 'code' in request.GET:
 		get_token(request.GET['code'],token_list)
 	elif 'error' in request.GET:
-		raise ValueError('Error authorizing application: {}'.format(request.GET['error']))
+		return render(request,'frontpage.html',{'error': error})
 	elif not token_list or token_list[0].has_expired() :
 		#check if we have a valid token in our database
 		#assuming we are only catering to one user
@@ -87,6 +106,7 @@ def get_token(code,token_list):
 
 
 def api_access(request):
+	print '###', request.build_absolute_uri(reverse('sign_in'))
 	data = {
 			'redirect_uri':'http://127.0.0.1:8000/',
 			'client_id' : 'Xn6OmexKPoMVKouUPkpAqnPWjuMZREYAXAZZ25ym',

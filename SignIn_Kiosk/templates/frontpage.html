@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+
+
+
+{% block content %}
+
+	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" align="center">
+	<h1 class="page-header">Welcome!</h1>
+	<form method="POST" class="form-inline">{% csrf_token %}
+		<button type="submit" class="btn btn-primary btn-lg">Get Started</button>
+	</form>
+	</div>
+
+	{% if error %}
+	<h4>There was a error with API acess, Please try again!</h4>
+	{% endif %}
+
+
+
+<!-- /container -->
+{% endblock %}
+
+
+
+{% block sidebar %}
+{% endblock %}

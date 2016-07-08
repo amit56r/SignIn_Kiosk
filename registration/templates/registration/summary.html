@@ -9,20 +9,24 @@
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" align="left">
 
 	<h1 class="page-header">{{section_name}}</h1>
-	   	<div class="progress">
-  <div class="progress-bar" role="progressbar" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{progress}}%;">
-    <span class="sr-only">{{progress}}% Complete</span>
-  </div>
-</div>
+  {% if missing_list %}
+  <h3>Warning: Missing Items</h3>
+  <ul>
+    {% for m in missing_list%}
+    <li> {{m}}</li>
+    {% endfor %}
+  </ul>
+  <h3>Are you sure you want to continue?</h3>
+  {% else %}
+  <h3> Everything looks good! :) </h3>
+  {% endif %}
 
-
-	<form method="POST" class="">{% csrf_token %}
-    <div class="form-group">
-		{{form.as_p}}
-		<button type="submit" class="btn btn-primary" >Save & Continue</button>
+  <form  method="POST">{% csrf_token %}
+  <div>
+  <button class="btn btn-danger btn-lg" type="Submit">Submit</button>
   </div>
-	</form>
-</div>
+  </form>
+
 
 <!-- /container -->
 {% endblock %}
@@ -35,7 +39,8 @@
    <ul class="nav nav-sidebar">
             <li {% isActive request 'basic_info' %}><a href="{% url 'basic_info' a_obj.a_id %}">Basic Info<span class="sr-only">(current)</span></a></li>
             <li {% isActive request 'details'  %}><a href="{% url 'details' a_obj.a_id %}">Details</a></li>
-            <li {% isActive request 'notes_and_comments'  %}><a href="{% url 'notes_and_comments' a_obj.a_id %}">Notes & Comments</a></li>      
+            <li {% isActive request 'notes_and_comments'  %}><a href="{% url 'notes_and_comments' a_obj.a_id %}">Notes & Comments</a></li>
+            <!---<li><a href="#">Medication</a></li> -->       
    </ul>
 
 

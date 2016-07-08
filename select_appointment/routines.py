@@ -10,9 +10,19 @@ from django.core.exceptions import *
 #purge data: should behave per instance (we want the latest data)
 def clear_db():
 	appointment_list = Appointment.objects.all()
+	patients_list = Patient.objects.all()
+	doctor_list = Doctor.objects.all()
 
 	for appointment in appointment_list:
 		appointment.delete()
+
+	for patient in patients_list:
+		patient.delete()
+
+	for doctor in doctor_list:
+		doctor.delete()
+
+
 
 
 def import_data():
@@ -37,6 +47,31 @@ def add_patient(headers,p_id):
 				first_name = result['first_name'],
 				middle_name = result['middle_name'],
 				last_name = result['last_name'],
+				date_of_birth = result['date_of_birth'],
+				gender = result['gender'],
+				address = result['address'],
+				city  = result['city'],
+				state = result['state'],
+				zip_code = result['zip_code'],
+				cell_phone = result['cell_phone'],
+				home_phone = result['home_phone'],
+				email = result['email'],
+				emergency_contact_name = result['emergency_contact_name'],
+				emergency_contact_phone = result['emergency_contact_phone'],
+				emergency_contact_relation = result['emergency_contact_relation'],
+				ethnicity = result['ethnicity'],
+				race = result['race'],
+				social_security_number = result['social_security_number'],
+				employer = result['employer'],
+				employer_address = result['employer_address'],
+				employer_city = result['employer_city'],
+				employer_state = result['employer_state'],
+				employer_zip_code = result['employer_zip_code'],
+				responsible_party_name = result['responsible_party_name'],
+				responsible_party_relation = result['responsible_party_relation'],
+				responsible_party_phone = result['responsible_party_phone'],
+				responsible_party_email = result['responsible_party_email'],
+
 					)
 	p.save()
 	return p
@@ -77,15 +112,17 @@ def import_appointment(headers):
 	}
 	
 	results = []
+	#print params
+	#print timezone.now()
 	while appointment_url:
 		data = requests.get(appointment_url ,headers = headers, params = params).json()
 		results.extend(data['results'])
 		appointment_url = data['next']
+		#print data 
 
 	# need to populate the database
 	for a in results:
 
-		#print a
 
 		p_id = a['patient']
 		d_id  = a['doctor']
@@ -118,9 +155,11 @@ def import_appointment(headers):
 								a_id = a['id'],
 								duration= a['duration'],
 								reason = a['reason'],
+								notes = a['notes'],
 								patient = p,
 								doctor = d,
 								office = o,
+								status  = a['status']
 								)
 		a_object.save()
 
