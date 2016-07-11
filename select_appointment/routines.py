@@ -7,25 +7,9 @@ from django.core.exceptions import *
 
 
 
-#purge data: should behave per instance (we want the latest data)
-def clear_db():
-	appointment_list = Appointment.objects.all()
-	patients_list = Patient.objects.all()
-	doctor_list = Doctor.objects.all()
-
-	for appointment in appointment_list:
-		appointment.delete()
-
-	for patient in patients_list:
-		patient.delete()
-
-	for doctor in doctor_list:
-		doctor.delete()
-
-
-
-
 def import_data():
+	''' routine to import data from api'''
+
 	token_list  = token.objects.order_by('expire_timestamp') 
 	assert(len(token_list) == 1)
 
@@ -39,6 +23,7 @@ def import_data():
 
 
 def add_patient(headers,p_id):
+
 	patient_url = 'https://drchrono.com/api/patients/{}'.format(p_id)
 	result = requests.get(patient_url,headers=headers).json()
 
@@ -112,13 +97,12 @@ def import_appointment(headers):
 	}
 	
 	results = []
-	#print params
-	#print timezone.now()
+
 	while appointment_url:
 		data = requests.get(appointment_url ,headers = headers, params = params).json()
 		results.extend(data['results'])
 		appointment_url = data['next']
-		#print data 
+	
 
 	# need to populate the database
 	for a in results:

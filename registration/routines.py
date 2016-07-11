@@ -61,8 +61,7 @@ def submit_data(a_object):
 	}
 
 	reply = requests.patch(appointment_url,headers = headers,data = data).json()
-	#for key, value in reply.iteritems():
-	#	print key, ' -> ', value
+
 
 
 
@@ -109,6 +108,8 @@ def filter_list(missing_list):
 	for i,item in enumerate(missing_list):
 		missing_list[i] = ' '.join([ x.capitalize() for x in item.split('_')[1:]])
 	return missing_list
+
+
 
 
 

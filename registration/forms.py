@@ -49,6 +49,7 @@ class DetailForm(forms.ModelForm):
 
 
 class NotesForm(forms.ModelForm):
+	
 	class Meta:
 		model = Appointment
 		fields = (

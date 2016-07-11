@@ -2,7 +2,7 @@ from django.shortcuts import render
 from SignIn_Kiosk.models import token
 from .models import Patient, Doctor, Appointment
 
-from .routines import import_data, clear_db
+from .routines import import_data
 
 from django.shortcuts import redirect
 from django.utils import timezone
@@ -20,7 +20,6 @@ import datetime, requests
 
 
 def select_screen(request):	
-	clear_db()  #since appointment can be updated (also we are only gettin data for the day) - not expensive
 	import_data() 
 
 	#print request.POST

@@ -8,6 +8,7 @@ import datetime
 
 
 class token(models.Model):
+	'''Model to hold token'''
 	access_token = models.CharField(max_length = 20, blank=True)
 	refresh_token  = models.CharField(max_length=20, blank=True)
 	expire_timestamp = models.DateTimeField(blank = True)
@@ -18,8 +19,6 @@ class token(models.Model):
 	def has_expired(self):
 		now = timezone.now()
 		return  self.expire_timestamp <= now
-
-
 
 
 	def __str__(self):

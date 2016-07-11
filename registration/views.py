@@ -39,8 +39,6 @@ def basic_info(request, a_id):
 				'progress': str(get_progess(a_object)),
 				}
 
-
-
 	return render(request,'registration/form.html',context)
 
 
@@ -63,8 +61,8 @@ def details(request, a_id):
 				'progress': str(get_progess(a_object)),
 				}
 
-
 	return render(request,'registration/form.html',context)
+
 
 def notes_and_comments(request,a_id):
 	a_object =  Appointment.objects.get(a_id = a_id)
@@ -85,13 +83,11 @@ def notes_and_comments(request,a_id):
 				'progress': str(get_progess(a_object)),
 				}
 
-
 	return render(request,'registration/form.html',context)
 
 
-
-
 def summary(request, a_id):
+	
 	a_object =  Appointment.objects.get(a_id = a_id)
 
 	missing_list = []
@@ -101,15 +97,9 @@ def summary(request, a_id):
 	all_items,done,missing = get_items_status(a_object.patient)
 	missing_list.extend(missing)
 
-	#print a_object.__dict__
-
-
 	if request.method == "POST":
 		submit_data(a_object)
 		return redirect('done_screen', a_id)
-
-
-
 
 	context = {
 				'a_obj' : a_object,
@@ -117,19 +107,18 @@ def summary(request, a_id):
 				'missing_list' : filter_list(missing_list)
 				}
 
-
 	return render(request,'registration/summary.html', context)
 
 
 
 def done_screen(request,a_id):
+
 	a_object =  Appointment.objects.get(a_id = a_id)
 
 	context = {
 				'a_obj' : a_object,
 				'section_name' : 'Success',
 				}
-
 
 	return render(request, 'registration/done_page.html', context)
 

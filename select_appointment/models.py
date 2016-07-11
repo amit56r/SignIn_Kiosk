@@ -5,10 +5,7 @@ from django.db import models
 
 # Create your models here.
 
-# lets get the bare min done and that worry about the other feilds
 
-
-#TODO : add the required data later
 class Patient(models.Model):
 	p_id = models.IntegerField(blank=True)
 	first_name  = models.CharField(max_length = 20)
